@@ -21,12 +21,16 @@ const PRODUCT_FINDER = {
   parameters: getProductsJSONSchema,
   rerun: true,
   rerunWithDifferentParameters: true,
-  runCmd: async ({ product }) => {
+  runCmd: async ({ product }, memory) => { // memory comes from the server
     try {
       const { data } = await axios.get(
         `https://dummyjson.com/products/search?q=${encodeURIComponent(product)}`
       );
-      return JSON.stringify(data);
+      memory[product] = JSON.stringify(data); // the product will be saved in the memory
+      return {
+        responseString: "product found", // this string will be returned to the chat bot
+        memory: memory // memory is returned back to the server after being updated 
+      }
     } catch (err) {
       return "Error trying to execute the tool";
     }

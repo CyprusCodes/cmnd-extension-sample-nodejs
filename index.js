@@ -30,7 +30,7 @@ app.get("/cmnd-tools", (req, res) => {
 app.post("/run-cmnd-tool", async (req, res) => {
   const args = req.body;
   const toolToRun = tools.find((t) => t.name === args.toolName);
-  const results = await toolToRun.runCmd(args.props);
+  const results = await toolToRun.runCmd(args.props, args.memory);
   res.send(results);
 });
 

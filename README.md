@@ -53,14 +53,25 @@ const YOUR_TOOL_NAME = {
   rerunWithDifferentParameters: true, // Set to false if different parameters are not allowed
   runCmd: async (
     {
-      /* your parameter names here */
-    }
+      /* Your parameter names here */
+    }, memory // Comes from the server. You can add data to it that won't be a part of the chatbot's response
   ) => {
     try {
       // Implement your tool's logic here:
 
       const data = await axios.get(/* url based on parameters */);
+      
+      memory[your_key] = "" // The data you want to save (Optional)
+
+      // If you updated the memory
+      return {
+        responseString: "", // The string to be sent as a response to the chatbot
+        memory: memory // Return memory after updating it
+      }
+
+      // Or you can just return the data as the chatbot's response
       return JSON.stringify(data);
+
     } catch (err) {
       // Handle potential errors and return a meaningful message
       return "Error trying to execute the tool";
