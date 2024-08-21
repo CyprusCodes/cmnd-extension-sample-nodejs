@@ -22,14 +22,14 @@ const echoUserSchema = yupToJsonSchema(
 );
 
 // an example of a simple tool that returns the weather details of a city
-const findProduct = async (product) => {
+const findProduct = (product) => {
   const products = ["watch", "laptop", "car"];
   const foundProduct = products.includes(product);
   return foundProduct ? "Product found" : "Product not found";
 };
 
 // an example of a tool that uses the CMND's memory object feature to store some data
-const putUserName = async (name, memory) => {
+const putUserName = (name, memory) => {
   memory["name"] = name;
   return {
     responseString: `Name ${name} saved to memory successfully`,
@@ -38,7 +38,7 @@ const putUserName = async (name, memory) => {
 };
 
 // an example of a tool that uses the CMND's memory object feature to retrive some data
-const echoUserName = async (name, memory) => {
+const echoUserName = (name, memory) => {
   const userName = memory["name"];
   if (userName) {
     return {
