@@ -23,8 +23,8 @@ const echoUserSchema = yupToJsonSchema(
 
 // an example of a simple tool that returns the weather details of a city
 const findProduct = (product) => {
-  const products = ["watch", "laptop", "car"];
-  const foundProduct = products.includes(product);
+  const products_array = ["watch", "laptop", "car"];
+  const foundProduct = products_array.includes(product);
   return foundProduct ? "Product found" : "Product not found";
 };
 
@@ -56,6 +56,8 @@ const echoUserName = (name, memory) => {
 const tools = [
   {
     // an example where we are not using the prerequisites
+    // an example of a tool with a postCallPrompt
+    // an example of a tool with rerun false and rerunWithDifferentParameters false (CMND is not running the tool again)
     name: "product_finder",
     description: "checks if a product is available in the store",
     category: "hackathon",
@@ -65,12 +67,14 @@ const tools = [
     associatedCommands: [],
     prerequisites: [],
     parameters: getProductSchema,
-    rerun: true,
-    rerunWithDifferentParameters: true,
+    rerun: false,
+    rerunWithDifferentParameters: false,
     runCmd: findProduct,
+    postCallPrompt: "if the is not found, ask the user to try another product",
   },
   {
     // an example where we are using the prerequisites where the product_finder tool should be run before this tool
+    // an example of a tool without a postCallPrompt
     name: "putUserName",
     description: "saves the username to the memory",
     category: "hackathon",
@@ -86,6 +90,7 @@ const tools = [
   },
   {
     // an example where we are using the prerequisites where the putUserName and findProduct tool should be run before this tool
+    // an example of a tool with a postCallPrompt
     name: "echoUserName",
     description: "echos the username saved in the memory",
     category: "hackathon",
@@ -98,6 +103,8 @@ const tools = [
     rerun: true,
     rerunWithDifferentParameters: true,
     runCmd: echoUserName,
+    postCallPrompt:
+      "if the name is found, echo the name, if not found, ask the user to save the name first",
   },
 ];
 module.exports = tools;

@@ -19,6 +19,7 @@ app.get("/cmnd-tools", (req, res) => {
         rerun: t.rerun,
         rerunWithDifferentParameters: t.rerunWithDifferentParameters,
         prerequisites: t.prerequisites,
+        postCallPrompt: t.postCallPrompt,
       };
     });
     return { tools: toolsMapped };
