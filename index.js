@@ -17,7 +17,6 @@ app.get("/cmnd-tools", (req, res) => {
         functionType: t.functionType,
         isLongRunningTool: t.isLongRunningTool,
         rerun: t.rerun,
-        rerunWithDifferentParameters: t.rerunWithDifferentParameters,
         prerequisites: t.prerequisites,
         postCallPrompt: t.postCallPrompt,
       };
