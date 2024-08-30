@@ -1,5 +1,5 @@
 require("dotenv").config();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -17,7 +17,8 @@ app.get("/cmnd-tools", (req, res) => {
         functionType: t.functionType,
         isLongRunningTool: t.isLongRunningTool,
         rerun: t.rerun,
-        rerunWithDifferentParameters: t.rerunWithDifferentParameters,
+        prerequisites: t.prerequisites,
+        postCallPrompt: t.postCallPrompt,
       };
     });
     return { tools: toolsMapped };
