@@ -29,7 +29,7 @@ const findProduct = (product) => {
 };
 
 // an example of a tool that uses the CMND's memory object feature to store some data
-const putUserName = (name, memory) => {
+const putUserName = ({ name }, memory) => {
   memory["name"] = name;
   return {
     responseString: `Name ${name} saved to memory successfully`,
@@ -38,7 +38,7 @@ const putUserName = (name, memory) => {
 };
 
 // an example of a tool that uses the CMND's memory object feature to retrive some data
-const echoUserName = (name, memory) => {
+const echoUserName = ({ name }, memory) => {
   const userName = memory["name"];
   if (userName) {
     return {
@@ -81,7 +81,7 @@ const tools = [
     functionType: "backend",
     dangerous: false,
     associatedCommands: [],
-    prerequisites: ["product_finder"],
+    prerequisites: [],
     parameters: putUserNameSchema,
     rerun: "allowed",
     runCmd: putUserName,
@@ -96,7 +96,7 @@ const tools = [
     functionType: "backend",
     dangerous: false,
     associatedCommands: [],
-    prerequisites: ["product_finder", "putUserName"],
+    prerequisites: ["putUserName"],
     parameters: echoUserSchema,
     rerun: "disabled",
     runCmd: echoUserName,
