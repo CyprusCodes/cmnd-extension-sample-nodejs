@@ -1,7 +1,5 @@
 require("dotenv").config();
-const axios = require("axios");
 const yup = require("yup");
-const fs = require("fs");
 const yupToJsonSchema = require("./yupToJsonSchema");
 
 const getProductSchema = yupToJsonSchema(
