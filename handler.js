@@ -28,6 +28,15 @@ exports.handler = async (event) => {
     if (path === "/run-cmnd-tool" && httpMethod === "POST") {
       // Handle POST /run-cmnd-tool
       const { toolName, props, memory } = JSON.parse(event.body);
+      // remove organization / conversation metadata
+      const conversationId = props.conversationId;
+      delete props.conversationId;
+
+      const chatbotConversationId = props.chatbotConversationId;
+      delete props.chatbotConversationId;
+
+      const organizationId = props.organizationId;
+      delete props.organizationId;
 
       const toolToRun = tools.find((t) => t.name === toolName);
       if (!toolToRun) {
