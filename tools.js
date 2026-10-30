@@ -19,6 +19,8 @@ const echoUserSchema = yupToJsonSchema(
   })
 );
 
+const getPhoneNumberSchema = yupToJsonSchema(yup.object({}));
+
 // an example of a simple tool that returns the weather details of a city
 const findProduct = (product) => {
   const products_array = ["watch", "laptop", "car"];
@@ -49,6 +51,23 @@ const echoUserName = ({ name }, memory) => {
       memory: memory,
     };
   }
+};
+
+// an example of a tool that uses the context CMND passes to every tool call
+// senderPhoneNumber is only set on WhatsApp; turn on "require phone number" on the
+// chatbot so it is always known
+const getPhoneNumber = (props, memory, context) => {
+  const phoneNumber = context.senderPhoneNumber;
+  if (!phoneNumber) {
+    return {
+      responseString: "The user's phone number is not available",
+      memory: memory,
+    };
+  }
+  return {
+    responseString: `The user's phone number is ${phoneNumber}`,
+    memory: memory,
+  };
 };
 
 const tools = [
@@ -100,6 +119,20 @@ const tools = [
     runCmd: echoUserName,
     postCallPrompt:
       "if the name is found, echo the name, if not found, ask the user to save the name first",
+  },
+  {
+    // an example of a tool that reads the context instead of its arguments
+    name: "getPhoneNumber",
+    description: "gets the phone number of the user the assistant is talking to",
+    category: "hackathon",
+    subcategory: "communication",
+    functionType: "backend",
+    dangerous: false,
+    associatedCommands: [],
+    prerequisites: [],
+    parameters: getPhoneNumberSchema,
+    rerun: "allowed",
+    runCmd: getPhoneNumber,
   },
 ];
 module.exports = tools;
