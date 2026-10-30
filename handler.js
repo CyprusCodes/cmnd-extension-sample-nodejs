@@ -1,5 +1,17 @@
 const tools = require("./tools.js");
 
+// Values CMND adds to every tool call. They are not tool arguments, so they are
+// handed to runCmd separately, as its third argument.
+// senderPhoneNumber is the WhatsApp sender's phone, or null when it is unknown.
+const CONTEXT_KEYS = [
+  "conversationId",
+  "chatbotConversationId",
+  "chatbotConversationRef",
+  "chatbotId",
+  "organizationId",
+  "senderPhoneNumber",
+];
+
 exports.handler = async (event) => {
   try {
     const { path, httpMethod } = event;
@@ -28,15 +40,11 @@ exports.handler = async (event) => {
     if (path === "/run-cmnd-tool" && httpMethod === "POST") {
       // Handle POST /run-cmnd-tool
       const { toolName, props, memory } = JSON.parse(event.body);
-      // remove organization / conversation metadata
-      const conversationId = props.conversationId;
-      delete props.conversationId;
-
-      const chatbotConversationId = props.chatbotConversationId;
-      delete props.chatbotConversationId;
-
-      const organizationId = props.organizationId;
-      delete props.organizationId;
+      const context = {};
+      for (const key of CONTEXT_KEYS) {
+        context[key] = props[key] ?? null;
+        delete props[key];
+      }
 
       const toolToRun = tools.find((t) => t.name === toolName);
       if (!toolToRun) {
@@ -47,7 +55,7 @@ exports.handler = async (event) => {
         };
       }
 
-      const results = await toolToRun.runCmd(props, memory);
+      const results = await toolToRun.runCmd(props, memory, context);
 
       return {
         statusCode: 200,
